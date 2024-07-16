@@ -2,11 +2,12 @@
 
 # Tic, tac, toe game class that manages board state and player/cpu moves
 class Game
-  attr_reader :game_over
+  attr_reader :game_over, :winner
 
   def initialize
     @board = Array.new(3) { Array.new(3, ' ') }
     @game_over = false
+    @winner = nil
   end
 
   def draw_board
@@ -31,9 +32,18 @@ class Game
 
   private
 
+  def no_available_spaces?
+    @board.flatten.count(' ').zero?
+  end
+
   def make_move(row_index, column_index, token)
     @board[row_index][column_index] = token
-    @game_over = true if last_move_wins?(row_index, column_index, token)
+    if last_move_wins?(row_index, column_index, token)
+      @game_over = true
+      @winner = token
+    elsif no_available_spaces?
+      @game_over = true
+    end
   end
 
   def last_move_wins?(row_index, column_index, token)
