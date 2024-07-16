@@ -1,21 +1,22 @@
-run_game = true
+quit_game = false
 
-puts 'Tic Tac Toe'
+puts 'Welcome to my tic, tac, toe game built with Ruby!'
 
-while run_game
-  puts '  > Enter 1 to start a new game'
-  puts '  > Enter 2 to exit'
+until quit_game
+  puts
+  puts "  > Enter '1' to start a new game"
+  puts "  > Enter '2' to exit the program"
+  puts
+  print 'Your input: '
+  user_input = gets.chomp
+  puts
 
-  print 'Input: '
-
-  user_choice = gets.chomp
-
-  if user_choice == '1'
+  if user_input == '1'
     puts 'Starting a new game...'
-  elsif user_choice == '2'
-    puts 'Exiting...'
-    run_game = false
+  elsif user_input == '2'
+    puts 'Exiting the program...'
+    quit_game = true
   else
-    puts 'Unrecognized input...'
+    puts 'Unrecognized input, please try again...'
   end
 end
