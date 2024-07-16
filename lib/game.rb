@@ -30,6 +30,20 @@ class Game
     make_move(row - 1, column - 1, 'X')
   end
 
+  def generate_cpu_move
+    available_spaces = []
+    @board.each_with_index do |row, row_index|
+      row.each_with_index do |token, col_index|
+        available_spaces.push([row_index + 1, col_index + 1]) if token == ' '
+      end
+    end
+    available_spaces.sample
+  end
+
+  def make_cpu_move(row, column)
+    make_move(row - 1, column - 1, 'O')
+  end
+
   private
 
   def no_available_spaces?
