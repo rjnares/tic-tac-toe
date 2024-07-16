@@ -58,5 +58,10 @@ until quit_game
       puts 'Column integer is invalid, please try again...'
       next
     end
+
+    unless game.valid_move?(row, column)
+      puts "Space [#{row}, #{column}] is already filled, please try again..."
+      next
+    end
   end
 end

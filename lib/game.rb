@@ -21,6 +21,10 @@ class Game
     number.between?(1, 3) ? number : nil
   end
 
+  def valid_move?(row, column)
+    @board[row - 1][column - 1] == ' '
+  end
+
   private
 
   def print_row(row, row_num)
