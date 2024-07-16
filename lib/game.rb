@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
+# Tic, tac, toe game class that manages board state and player/cpu moves
 class Game
   attr_reader :game_over
-  
+
   def initialize
-    @board = Array.new(3) { Array.new(3, " ") }
+    @board = Array.new(3) { Array.new(3, ' ') }
     @game_over = false
   end
 
@@ -15,8 +18,7 @@ class Game
 
   def get_validated_input(user_input)
     number = string_to_number(user_input)
-    number = number.between?(1, 3) ? number : nil
-    number
+    number.between?(1, 3) ? number : nil
   end
 
   private
@@ -29,11 +31,8 @@ class Game
   end
 
   def string_to_number(string)
-    begin
-      Integer(string || '')
-    rescue ArgumentError
-      -1
-    end
+    Integer(string || '')
+  rescue ArgumentError
+    -1
   end
-
 end
