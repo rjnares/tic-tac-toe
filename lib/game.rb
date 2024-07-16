@@ -10,9 +10,9 @@ class Game
   end
 
   def draw_board
+    puts '   1   2   3'
     @board.each_with_index do |row, idx|
-      print_row(row)
-      puts '---+---+---' unless idx == @board.length - 1
+      print_row(row, idx + 1)
     end
   end
 
@@ -23,11 +23,13 @@ class Game
 
   private
 
-  def print_row(row)
+  def print_row(row, row_num)
+    print "#{row_num} "
     row.each_with_index do |token, idx|
       col_separator = idx == row.length - 1 ? "\n" : '|'
       print " #{token} #{col_separator}"
     end
+    puts '  ---+---+---' unless row_num == @board.length
   end
 
   def string_to_number(string)
