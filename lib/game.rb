@@ -25,7 +25,37 @@ class Game
     @board[row - 1][column - 1] == ' '
   end
 
+  def make_player_move(row, column)
+    make_move(row - 1, column - 1, 'X')
+  end
+
   private
+
+  def make_move(row_index, column_index, token)
+    @board[row_index][column_index] = token
+    @game_over = true if last_move_wins?(row_index, column_index, token)
+  end
+
+  def last_move_wins?(row_index, column_index, token)
+    three_in_a_row?(row_index, token) ||
+      three_in_a_column?(column_index, token) ||
+      three_diagonal?(token)
+  end
+
+  def three_in_a_row?(row_index, token)
+    @board[row_index].all? { |element| element == token }
+  end
+
+  def three_in_a_column?(column_index, token)
+    @board.map { |row| row[column_index] }.all? { |element| element == token }
+  end
+
+  def three_diagonal?(token)
+    top_left_to_bottom_right = @board.each_with_index.map { |row, row_index| row[row_index] }
+    bottom_left_to_top_right = @board.reverse.each_with_index.map { |row, row_index| row[row_index] }
+    top_left_to_bottom_right.all? { |element| element == token } ||
+      bottom_left_to_top_right.all? { |element| element == token }
+  end
 
   def print_row(row, row_num)
     print "#{row_num} "

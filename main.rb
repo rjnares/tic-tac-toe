@@ -63,5 +63,14 @@ until quit_game
       puts "Space [#{row}, #{column}] is already filled, please try again..."
       next
     end
+
+    game.make_player_move(row, column)
+    puts "You placed an 'X' on space [#{row}, #{column}]:"
+    game.draw_board
+
+    if game.game_over
+      puts
+      puts 'You win, game over!'
+    end
   end
 end
