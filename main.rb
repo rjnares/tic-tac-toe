@@ -31,7 +31,7 @@ until quit_game
 
   until game.game_over
     puts
-    puts 'Current game board:'
+    puts 'Current game board'
     game.draw_board
 
     puts
@@ -65,12 +65,36 @@ until quit_game
     end
 
     game.make_player_move(row, column)
-    puts "You placed an 'X' on space [#{row}, #{column}]:"
-    game.draw_board
+    puts "You placed an 'X' on space [#{row}, #{column}]"
 
-    if game.game_over
+    if game.winner == 'X'
+      game.draw_board
       puts
-      puts 'You win, game over!'
+      puts 'Game Over!'
+      puts "That is three 'X' in a row...you win!"
+      next
+    elsif game.game_over
+      game.draw_board
+      puts
+      puts 'Game Over!'
+      puts 'All spaces have been filled...game ends in a tie!'
+      next
+    end
+
+    row, column = game.generate_cpu_move
+    game.make_cpu_move(row, column)
+    puts "The cpu placed an 'O' on space [#{row}, #{column}]"
+
+    if game.winner == 'O'
+      game.draw_board
+      puts
+      puts 'Game Over!'
+      puts "That is three 'O' in a row...you lose!"
+    elsif game.game_over
+      game.draw_board
+      puts
+      puts 'Game Over!'
+      puts 'All spaces have been filled...game ends in a tie!'
     end
   end
 end
