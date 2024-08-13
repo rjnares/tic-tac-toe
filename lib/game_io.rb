@@ -41,9 +41,25 @@ module GameIO
   end
 
   def player_move
-    row = player_row
-    col = player_col
-    [row, col]
+    loop do
+      draw_board
+      row = player_row
+      col = player_col
+      return [row, col] if valid_move?(row - 1, col - 1)
+
+      invalid_move_message(row, col)
+    end
+  end
+
+  def valid_move?(row, col)
+    board[row][col] == ' '
+  end
+
+  def invalid_move_message(row, col)
+    puts <<~HEREDOC
+
+      Space [#{row}, #{col}] is already filled...
+    HEREDOC
   end
 
   def player_row

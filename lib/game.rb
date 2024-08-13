@@ -19,7 +19,6 @@ class Game
   end
 
   def play_turns
-    draw_board
     move = player_move
   end
 

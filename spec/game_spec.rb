@@ -122,8 +122,10 @@ describe Game do
     let(:col) { 3 }
 
     before do
+      allow(game).to receive(:draw_board)
       allow(game).to receive(:player_row).and_return(row)
       allow(game).to receive(:player_col).and_return(col)
+      allow(game).to receive(:invalid_move_message)
     end
 
     it 'calls #player_row' do
@@ -136,8 +138,36 @@ describe Game do
       game.player_move
     end
 
-    it 'returns [row, col]' do
-      expect(game.player_move).to eq([row, col])
+    context 'when [row, col] is invalid once' do
+      before do
+        allow(game).to receive(:valid_move?).and_return(false, true)
+      end
+
+      it 'calls #invalid_move_message once' do
+        expect(game).to receive(:invalid_move_message).once
+        game.player_move
+      end
+    end
+
+    context 'when [row, col] is invalid more than once' do
+      before do
+        allow(game).to receive(:valid_move?).and_return(false, false, false, false, false, true)
+      end
+
+      it 'calls #invalid_move_message more than once' do
+        expect(game).to receive(:invalid_move_message).exactly(5).times
+        game.player_move
+      end
+    end
+
+    context 'when [row, col] is valid' do
+      before do
+        allow(game).to receive(:valid_move?).and_return(true)
+      end
+
+      it 'returns [row, col]' do
+        expect(game.player_move).to eq([row, col])
+      end
     end
   end
 
@@ -234,6 +264,21 @@ describe Game do
         actual = game.player_col
         expect(actual).to eq(expected)
       end
+    end
+  end
+
+  describe '#valid_move?' do
+    let(:row) { 1 }
+    let(:col) { 2 }
+    let(:board) { game.instance_variable_get(:@board) }
+
+    it 'returns false when [row, col] is filled' do
+      board[row][col] = 'X'
+      expect(game.valid_move?(row, col)).to eq(false)
+    end
+
+    it 'returns true when [row, col] is empty' do
+      expect(game.valid_move?(row, col)).to eq(true)
     end
   end
 end
