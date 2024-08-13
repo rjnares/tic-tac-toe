@@ -12,16 +12,18 @@ class Game
 
   def play
     welcome_message
-    return exit_message if game_start_options == '1'
+    return exit_message if game_start_options == 1
 
     new_game_message
     play_turns
   end
 
   def play_turns
-    puts <<~HEREDOC
-
-      TODO
-    HEREDOC
+    draw_board
+    move = player_move
   end
+
+  private
+
+  attr_reader :board
 end
