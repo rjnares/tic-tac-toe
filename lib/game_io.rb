@@ -28,6 +28,8 @@ module GameIO
 
       Starting a new game...
     HEREDOC
+
+    draw_board
   end
 
   def game_start_options
@@ -42,7 +44,6 @@ module GameIO
 
   def player_move
     loop do
-      draw_board
       row = player_row
       col = player_col
       return [row, col] if valid_move?(row - 1, col - 1)
@@ -51,8 +52,8 @@ module GameIO
     end
   end
 
-  def valid_move?(row, col)
-    board[row][col] == ' '
+  def valid_move?(row_idx, col_idx)
+    board[row_idx][col_idx] == ' '
   end
 
   def invalid_move_message(row, col)
@@ -60,6 +61,8 @@ module GameIO
 
       Space [#{row}, #{col}] is already filled...
     HEREDOC
+
+    draw_board
   end
 
   def player_row
@@ -141,5 +144,35 @@ module GameIO
 
     HEREDOC
     print 'Your input: '
+  end
+
+  def move_set_message(row, col, token)
+    puts <<~HEREDOC
+
+      #{token == 'X' ? 'You' : 'CPU'} placed an '#{token}' at [#{row}, #{col}]
+    HEREDOC
+
+    draw_board
+  end
+
+  def all_spaces_filled_message
+    puts <<~HEREDOC
+
+      All spaces have been filled, game ends in a tie!
+    HEREDOC
+  end
+
+  def player_win_message(token)
+    puts <<~HEREDOC
+
+      That is three '#{token}' in a row, you win!
+    HEREDOC
+  end
+
+  def player_lose_message(token)
+    puts <<~HEREDOC
+
+      That is three '#{token}' in a row, you lose!
+    HEREDOC
   end
 end

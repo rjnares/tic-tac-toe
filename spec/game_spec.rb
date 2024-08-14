@@ -5,6 +5,70 @@ require_relative '../lib/game'
 describe Game do
   subject(:game) { described_class.new }
 
+  describe '#initialize' do
+    let(:board) { game.instance_variable_get(:@board) }
+
+    it 'creates a 2D array with 3 rows' do
+      expect(board.length).to eq(3)
+    end
+
+    it 'creates a 2D array with 3 columns' do
+      expect(board.all? { |row| row.length == 3 }).to eq(true)
+    end
+
+    it "creates a 2D array where every value is a single whitespace character ' '" do
+      expect(board.flatten.all?(' ')).to eq(true)
+    end
+  end
+
+  describe '#play' do
+    before do
+      allow(game).to receive(:welcome_message)
+      allow(game).to receive(:game_start_options)
+      allow(game).to receive(:exit_message)
+      allow(game).to receive(:new_game_message)
+      allow(game).to receive(:play_turns)
+    end
+
+    context 'when #game_start_options returns 1' do
+      before do
+        allow(game).to receive(:game_start_options).and_return(1)
+      end
+
+      it 'should call #exit_message' do
+        expect(game).to receive(:exit_message).once
+        game.play
+      end
+
+      it 'should not call #new_game_message' do
+        expect(game).not_to receive(:new_game_message)
+        game.play
+      end
+
+      it 'should not call #play_turns' do
+        expect(game).not_to receive(:play_turns)
+        game.play
+      end
+    end
+
+    context 'when #game_start_options does not return 1' do
+      it 'should not call #exit_message' do
+        expect(game).not_to receive(:exit_message)
+        game.play
+      end
+
+      it 'should call #new_game_message' do
+        expect(game).to receive(:new_game_message).once
+        game.play
+      end
+
+      it 'should call #play_turns' do
+        expect(game).to receive(:play_turns).once
+        game.play
+      end
+    end
+  end
+
   describe '#valid_input?' do
     context 'when max and min are switched' do
       it 'returns true if input is in range [max, min]' do
@@ -122,7 +186,6 @@ describe Game do
     let(:col) { 3 }
 
     before do
-      allow(game).to receive(:draw_board)
       allow(game).to receive(:player_row).and_return(row)
       allow(game).to receive(:player_col).and_return(col)
       allow(game).to receive(:invalid_move_message)
